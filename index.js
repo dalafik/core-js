@@ -2,13 +2,15 @@ const fs = require('fs')
 const UglifyJS = require('uglify-js')
 
 const addPolyfills = [
-    '/node_modules/whatwg-fetch/fetch.js'
+    '/node_modules/whatwg-fetch/fetch.js',
+    '/mutationObserver/MutationObserver.js',
 ]
 
 require('core-js-builder')({
     modules: [
         'es.symbol',
         'es.map',
+        'es.weak-map',
         'es.object.is',
         'es.object.assign',
     ],
@@ -16,7 +18,7 @@ require('core-js-builder')({
 .then(code => {
     addPolyfills.map(filePath => {
         const file = fs.readFileSync(__dirname + filePath, 'utf8')
-        code += `\n!function (undefined) { 'use strict'; ${ file } }();`;
+        code += file
     })
 
     const result = UglifyJS.minify(code, {
