@@ -1,6 +1,10 @@
 const fs = require('fs')
 const UglifyJS = require('uglify-js')
 
+const addPolyfills = [
+    '/node_modules/whatwg-fetch/fetch.js'
+]
+
 require('core-js-builder')({
     modules: [
         'es.symbol',
@@ -10,6 +14,11 @@ require('core-js-builder')({
     ],
 })
 .then(code => {
+    addPolyfills.map(filePath => {
+        const file = fs.readFileSync(__dirname + filePath, 'utf8')
+        code += `\n!function (undefined) { 'use strict'; ${ file } }();`;
+    })
+
     const result = UglifyJS.minify(code, {
         mangle: {
           keep_fnames: true,

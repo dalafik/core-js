@@ -8,7 +8,9 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "whatwg-fetch": "^2.0.4"
+  },
   "devDependencies": {
     "core-js-builder": "^3.6.5",
     "uglify-js": "^3.10.0"
